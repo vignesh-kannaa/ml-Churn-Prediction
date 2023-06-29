@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Churn Prediction</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" type="text/css" href="index.css" />
+  </head>
+  <body class="margin">
+    <h1 class="title">Churn Prediction for Bank</h1>
+    <div>
+      The churn rate is a critical metric in the financial industry, measuring
+      the rate at which customers discontinue their relationship with a company
+      or service. Understanding and predicting churn is of utmost importance for
+      businesses as it directly impacts revenue and customer retention. In this
+      project, we aim to explore and analyze financial data using machine
+      learning models and exploratory data analysis (EDA) techniques to gain
+      insights into customer behavior and factors influencing churn. By
+      leveraging these techniques, we seek to develop effective strategies for
+      reducing churn and improving customer satisfaction, ultimately driving
+      business growth and success.
+    </div>
+    <!-- -------Tab s-------- -->
+    <div class="tabs-group">
+      <div class="tabs-container">
+        <div class="tabs">
+          <p>Home</p>
+        </div>
+        <div class="tabs">
+          <p>Model</p>
+        </div>
+        <div class="tabs">
+          <p>Statistics</p>
+        </div>
+
+        <div class="indicator"></div>
+      </div>
+
+      <div class="tab-content">
+        <!-- -------Tab 1-------- -->
+        <div class="tab-content-item">
+          <div class="container mx-auto">
+            <form
+              method="POST"
+              action="submit_form.php"
+              enctype="multipart/form-data"
+            >
+              <div class="mb-4">
+                <label for="fileType" class="text-lg font-bold"
+                  >How would you prefer to make predictions?</label
+                >
+                <select
+                  class="form-select mt-1 block w-full"
+                  id="fileType"
+                  name="fileType"
+                  onchange="toggleBulkOption()"
+                >
+                  <option value="single" selected>Single Entry</option>
+                  <option value="bulk">Bulk Entry</option>
+                </select>
+              </div>
+
+              <div id="bulkOption" class="mb-4">
+                <label for="file" class="text-lg font-bold">Upload File:</label>
+                <input type="file" class="mt-1 block" id="file" name="file" />
+              </div>
+
+              <div id="singleOption">
+                <div
+                  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                >
+                  <input
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="creditScore"
+                    type="text"
+                    placeholder="Username"
+                  />
+
+                  <div class="mb-4">
+                    <label for="country" class="text-lg font-bold"
+                      >Country:</label
+                    >
+                    <input
+                      type="text"
+                      class="mt-1 block w-full"
+                      id="country"
+                      name="country"
+                    />
+                  </div>
+
+                  <div class="mb-4">
+                    <label for="gender" class="text-lg font-bold"
+                      >Gender:</label
+                    >
+                    <input
+                      type="text"
+                      class="mt-1 block w-full"
+                      id="gender"
+                      name="gender"
+                    />
+                  </div>
+
+                  <div class="mb-4">
+                    <label for="age" class="text-lg font-bold">Age:</label>
+                    <input
+                      type="text"
+                      class="mt-1 block w-full"
+                      id="age"
+                      name="age"
+                    />
+                  </div>
+
+                  <div class="mb-4">
+                    <label for="tenure" class="text-lg font-bold"
+                      >Tenure:</label
+                    >
+                    <input
+                      type="text"
+                      class="mt-1 block w-full"
+                      id="tenure"
+                      name="tenure"
+                    />
+                  </div>
+
+                  <div class="mb-4">
+                    <label for="balance" class="text-lg font-bold"
+                      >Balance:</label
+                    >
+                    <input
+                      type="text"
+                      class="mt-1 block w-full"
+                      id="balance"
+                      name="balance"
+                    />
+                  </div>
+
+                  <div class="mb-4">
+                    <label for="products_number" class="text-lg font-bold"
+                      >Number of Products:</label
+                    >
+                    <input
+                      type="text"
+                      class="mt-1 block w-full"
+                      id="products_number"
+                      name="products_number"
+                    />
+                  </div>
+
+                  <div class="mb-4">
+                    <label for="credit_card" class="text-lg font-bold"
+                      >Credit Card:</label
+                    >
+                    <input
+                      type="text"
+                      class="mt-1 block w-full"
+                      id="credit_card"
+                      name="credit_card"
+                    />
+                  </div>
+
+                  <div class="mb-4">
+                    <label for="active_member" class="text-lg font-bold"
+                      >Active Member:</label
+                    >
+                    <input
+                      type="text"
+                      class="mt-1 block w-full"
+                      id="active_member"
+                      name="active_member"
+                    />
+                  </div>
+
+                  <div class="mb-4">
+                    <label for="estimated_salary" class="text-lg font-bold"
+                      >Estimated Salary:</label
+                    >
+                    <input
+                      type="text"
+                      class="mt-1 block w-full"
+                      id="estimated_salary"
+                      name="estimated_salary"
+                    />
+                  </div>
+                </div>
+              </div>
+              <button
+                type="submit"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded-full w-full"
+              >
+                Predict
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- -------Tab 2-------- -->
+        <div class="tab-content-item">
+          <p>Tab 2 Content</p>
+        </div>
+        <!-- ------Tab 3--------- -->
+        <div class="tab-content-item">
+          <p>Tab 3 Content</p>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="script.js"></script>
+</html>
