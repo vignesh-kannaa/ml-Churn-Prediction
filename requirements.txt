@@ -1,5 +1,3 @@
+Flask
+pickle
 pandas
-logs/
-artifacts/
-__pycache__/
-# -e .

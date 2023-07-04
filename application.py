@@ -2,7 +2,6 @@ from flask import Flask, request, render_template
 import os
 import pickle
 import pandas as pd
-from flask import jsonify
 
 application = Flask(__name__)
 app = application
