@@ -6,32 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Churn Prediction</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <link rel="stylesheet" type="text/css" href="index.css" />
+    <!-- <script
+      type="text/javascript"
+      src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script> -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='index.css') }}"
+    />
   </head>
   <body class="margin">
     <h1 class="title">Churn Prediction for Bank</h1>
-    <div>
-      The churn rate is a critical metric in the financial industry, measuring
-      the rate at which customers discontinue their relationship with a company
-      or service. Understanding and predicting churn is of utmost importance for
-      businesses as it directly impacts revenue and customer retention. In this
-      project, we aim to explore and analyze financial data using machine
-      learning models and exploratory data analysis (EDA) techniques to gain
-      insights into customer behavior and factors influencing churn. By
-      leveraging these techniques, we seek to develop effective strategies for
-      reducing churn and improving customer satisfaction, ultimately driving
-      business growth and success.
-    </div>
-    <!-- -------Tab s-------- -->
+
+    <!-- -------Tabs-------- -->
     <div class="tabs-group">
       <div class="tabs-container">
         <div class="tabs">
-          <p>Home</p>
+          <p>Predict</p>
         </div>
         <div class="tabs">
-          <p>Model</p>
+          <p>Info</p>
         </div>
+        <div class="tabs">
+          <p>Data info</p>
+        </div>
+
         <div class="tabs">
           <p>Statistics</p>
         </div>
@@ -40,165 +50,369 @@
       </div>
 
       <div class="tab-content">
-        <!-- -------Tab 1-------- -->
+        <!-- -------Tab 2-------- -->
         <div class="tab-content-item">
           <div class="container mx-auto">
             <form
-              method="POST"
-              action="submit_form.php"
+              action="{{ url_for('predict') }}"
+              id="forminput"
+              name="forminput"
               enctype="multipart/form-data"
+              method="post"
             >
-              <div class="mb-4">
-                <label for="fileType" class="text-lg font-bold"
-                  >How would you prefer to make predictions?</label
-                >
-                <select
-                  class="form-select mt-1 block w-full"
-                  id="fileType"
-                  name="fileType"
-                  onchange="toggleBulkOption()"
-                >
-                  <option value="single" selected>Single Entry</option>
-                  <option value="bulk">Bulk Entry</option>
-                </select>
-              </div>
-
-              <div id="bulkOption" class="mb-4">
-                <label for="file" class="text-lg font-bold">Upload File:</label>
-                <input type="file" class="mt-1 block" id="file" name="file" />
-              </div>
-
-              <div id="singleOption">
-                <div
-                  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+              <div>
+                <label
+                  class="relative inline-flex items-center mb-4 cursor-pointer"
                 >
                   <input
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="creditScore"
-                    type="text"
-                    placeholder="Username"
+                    type="checkbox"
+                    class="sr-only peer"
+                    id="fileType"
+                    onchange="toggleBulkOption()"
+                    name="fileType"
                   />
 
-                  <div class="mb-4">
-                    <label for="country" class="text-lg font-bold"
-                      >Country:</label
+                  <div
+                    class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
+                  ></div>
+                  <span
+                    class="ml-3 text-sm font-medium text-white-900 dark:text-white-300"
+                    >Multiple Predictions</span
+                  >
+                </label>
+              </div>
+              <br />
+              <!-- bulk option -->
+              <div id="bulkOption" class="mb-4">
+                <div class="flex items-center justify-center w-full">
+                  <label
+                    for="dropzone-file"
+                    class="flex flex-col items-center justify-center w-1/2 h-30 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                  >
+                    <div
+                      class="flex flex-col items-center justify-center pt-5 pb-6"
                     >
+                      <svg
+                        aria-hidden="true"
+                        class="w-10 h-10 mb-3 text-gray-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                        ></path>
+                      </svg>
+                      <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                        <span class="font-semibold">Click to upload</span> or
+                        drag and drop
+                      </p>
+                      <p class="text-xs text-gray-500 dark:text-gray-400">
+                        CSV (MAX. 50 MB)
+                      </p>
+                    </div>
                     <input
-                      type="text"
-                      class="mt-1 block w-full"
-                      id="country"
-                      name="country"
+                      id="dropzone-file"
+                      name="bulkuploadfile"
+                      type="file"
+                      class="hidden"
                     />
-                  </div>
+                  </label>
+                </div>
 
-                  <div class="mb-4">
-                    <label for="gender" class="text-lg font-bold"
-                      >Gender:</label
-                    >
-                    <input
-                      type="text"
-                      class="mt-1 block w-full"
-                      id="gender"
-                      name="gender"
-                    />
-                  </div>
-
-                  <div class="mb-4">
-                    <label for="age" class="text-lg font-bold">Age:</label>
-                    <input
-                      type="text"
-                      class="mt-1 block w-full"
-                      id="age"
-                      name="age"
-                    />
-                  </div>
-
-                  <div class="mb-4">
-                    <label for="tenure" class="text-lg font-bold"
-                      >Tenure:</label
-                    >
-                    <input
-                      type="text"
-                      class="mt-1 block w-full"
-                      id="tenure"
-                      name="tenure"
-                    />
-                  </div>
-
-                  <div class="mb-4">
-                    <label for="balance" class="text-lg font-bold"
-                      >Balance:</label
-                    >
-                    <input
-                      type="text"
-                      class="mt-1 block w-full"
-                      id="balance"
-                      name="balance"
-                    />
-                  </div>
-
-                  <div class="mb-4">
-                    <label for="products_number" class="text-lg font-bold"
-                      >Number of Products:</label
-                    >
-                    <input
-                      type="text"
-                      class="mt-1 block w-full"
-                      id="products_number"
-                      name="products_number"
-                    />
-                  </div>
-
-                  <div class="mb-4">
-                    <label for="credit_card" class="text-lg font-bold"
-                      >Credit Card:</label
-                    >
-                    <input
-                      type="text"
-                      class="mt-1 block w-full"
-                      id="credit_card"
-                      name="credit_card"
-                    />
-                  </div>
-
-                  <div class="mb-4">
-                    <label for="active_member" class="text-lg font-bold"
-                      >Active Member:</label
-                    >
-                    <input
-                      type="text"
-                      class="mt-1 block w-full"
-                      id="active_member"
-                      name="active_member"
-                    />
-                  </div>
-
-                  <div class="mb-4">
-                    <label for="estimated_salary" class="text-lg font-bold"
-                      >Estimated Salary:</label
-                    >
-                    <input
-                      type="text"
-                      class="mt-1 block w-full"
-                      id="estimated_salary"
-                      name="estimated_salary"
-                    />
-                  </div>
+                <!-- <input
+                  class="block w-1/3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                  name="bulkuploadfile"
+                  id="dropzone-file"
+                  type="file"
+                /> -->
+              </div>
+              <!-- single option -->
+              <div id="singleOption">
+                <div class="grid md:grid-cols-4 md:gap-6">
+                  <input
+                    type="text"
+                    name="customerName"
+                    class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    value=""
+                    placeholder="Customer Name"
+                  />
+                  <select
+                    name="country"
+                    class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  >
+                    <option disabled selected>Country</option>
+                    <option>Germany</option>
+                    <option>Spain</option>
+                    <option>France</option>
+                  </select>
+                  <select
+                    name="gender"
+                    class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  >
+                    <option disabled selected>Gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                  </select>
+                  <input
+                    type="number"
+                    name="age"
+                    class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    value=""
+                    placeholder="Age"
+                  />
+                  <input
+                    type="number"
+                    name="tenure"
+                    class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    value=""
+                    placeholder="Tenure"
+                  />
+                  <input
+                    type="number"
+                    name="balance"
+                    class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    value=""
+                    placeholder="Balance"
+                  />
+                  <input
+                    type="number"
+                    name="creditScore"
+                    class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    value=""
+                    placeholder="Credit Score"
+                  />
+                  <input
+                    type="number"
+                    name="productsNumber"
+                    class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    value=""
+                    placeholder="No of Products"
+                  />
+                  <select
+                    name="creditCard"
+                    class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  >
+                    <option disabled selected>Credit Card</option>
+                    <option>Yes</option>
+                    <option>No</option>
+                  </select>
+                  <select
+                    name="activemember"
+                    class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  >
+                    <option disabled selected>Active Member</option>
+                    <option>Yes</option>
+                    <option>No</option>
+                  </select>
+                  <input
+                    type="number"
+                    name="estimatedSalary"
+                    class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    value=""
+                    placeholder="Estimated Salary"
+                  />
                 </div>
               </div>
-              <button
-                type="submit"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded-full w-full"
-              >
-                Predict
-              </button>
+              <br />
+              <div class="flex justify-center items-center">
+                <button
+                  class="w-48 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                >
+                  Predict
+                </button>
+              </div>
             </form>
           </div>
-        </div>
+          <div class="text-center">
+            {% if results is defined %} {% if results == 0 %}
 
+            <h5
+              class="mb-2 text-2xl font-bold tracking-tight text-green-900 dark:text-green"
+            >
+              No churn :)
+            </h5>
+            {% elif results == 1 %}
+
+            <h5
+              class="mb-2 text-2xl font-bold tracking-tight text-red-900 dark:text-red"
+            >
+              Churn :(
+            </h5>
+            <b>Recommendation:</b> Take proactive measures to retain the
+            customer by offering personalized incentives or loyalty programs
+            tailored to their needs and preferences.<br />
+            <b>Actionable Insights:</b> Analyze the factors contributing to
+            churn, such as customer behavior, satisfaction levels, and usage
+            patterns, to identify areas for improvement and develop targeted
+            retention strategies. {% endif %} {% endif %}
+            <!-- for bulk result -->
+            {{ bulkResult | safe}}
+          </div>
+        </div>
         <!-- -------Tab 2-------- -->
         <div class="tab-content-item">
-          <p>Tab 2 Content</p>
+          <div style="margin: 0 5%">
+            The churn rate is a critical metric in the financial industry,
+            measuring the rate at which customers discontinue their relationship
+            with a company or service. Understanding and predicting churn is of
+            utmost importance for businesses as it directly impacts revenue and
+            customer retention. In this project, we aim to explore and analyze
+            financial data using machine learning models and exploratory data
+            analysis (EDA) techniques to gain insights into customer behavior
+            and factors influencing churn. By leveraging these techniques, we
+            seek to develop effective strategies for reducing churn and
+            improving customer satisfaction, ultimately driving business growth
+            and success.
+          </div>
+        </div>
+        <!-- -------Tab 2-------- -->
+        <div class="tab-content-item">
+          <div
+            class="relative overflow-x-auto"
+            style="width: 50%; margin: auto"
+          >
+            <table
+              class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+            >
+              <thead
+                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+              >
+                <tr>
+                  <th scope="col" class="px-6 py-3">Field Input</th>
+                  <th scope="col" class="px-6 py-3">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                >
+                  <th
+                    scope="row"
+                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    Customer Name
+                  </th>
+                  <td class="px-6 py-4">Name of the Customer</td>
+                </tr>
+                <tr
+                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                >
+                  <th
+                    scope="row"
+                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    Country
+                  </th>
+                  <td class="px-6 py-4">
+                    Country in which the customer holds the bank account
+                  </td>
+                </tr>
+                <tr
+                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                >
+                  <th
+                    scope="row"
+                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    Credit Score
+                  </th>
+                  <td class="px-6 py-4">Credit score of the customer</td>
+                </tr>
+                <tr
+                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                >
+                  <th
+                    scope="row"
+                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    Age
+                  </th>
+                  <td class="px-6 py-4">Age of the customer</td>
+                </tr>
+                <tr
+                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                >
+                  <th
+                    scope="row"
+                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    Tenure
+                  </th>
+                  <td class="px-6 py-4">
+                    How long the customer been in the bank
+                  </td>
+                </tr>
+                <tr
+                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                >
+                  <th
+                    scope="row"
+                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    Balance
+                  </th>
+                  <td class="px-6 py-4">
+                    How much balance they have in their account
+                  </td>
+                </tr>
+                <tr
+                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                >
+                  <th
+                    scope="row"
+                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    Active Member
+                  </th>
+                  <td class="px-6 py-4">
+                    whether they are active member or inactive member.
+                  </td>
+                </tr>
+                <tr
+                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                >
+                  <th
+                    scope="row"
+                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    Credit Card
+                  </th>
+                  <td class="px-6 py-4">
+                    Whether the customer have credit card or not (Yes or No)
+                  </td>
+                </tr>
+                <tr
+                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                >
+                  <th
+                    scope="row"
+                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    Products Number
+                  </th>
+                  <td class="px-6 py-4">Number of products they own</td>
+                </tr>
+                <tr
+                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                >
+                  <th
+                    scope="row"
+                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    Estimated Salary
+                  </th>
+                  <td class="px-6 py-4">
+                    How much customer are expected to earn
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
         <!-- ------Tab 3--------- -->
         <div class="tab-content-item">
@@ -207,5 +421,30 @@
       </div>
     </div>
   </body>
-  <script src="script.js"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <!-- <script>
+    $("#forminput").on("submit", function (event) {
+      event.preventDefault();
+      var formData = new FormData(this);
+      var fileInput = document.getElementById("dropzone-file");
+      console.log("fileInput: ", fileInput);
+      if (fileInput.files.length > 0) {
+        formData.append("bulkuploadfile", fileInput.files[0]);
+      }
+      console.log(formData);
+
+      $.ajax({
+        url: "/predict",
+        type: "POST",
+        data: $(this).serialize(),
+        success: function (response) {
+          if (response) {
+            $("#result").html("success");
+          } else {
+            $("#result").html("failed");
+          }
+        },
+      });
+    });
+  </script> -->
 </html>

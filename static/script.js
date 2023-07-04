@@ -1,11 +1,11 @@
 window.addEventListener("load", function () {
-  var fileTypeSelect = document.getElementById("fileType");
-  fileTypeSelect.value = "single";
-  toggleBulkOption();
+  var toggleCheckbox = document.getElementById("fileType");
+  if (!toggleCheckbox.checked) {
+    toggleBulkOption();
+  }
 });
 
 const allTabsGroup = document.querySelectorAll(".tabs-group");
-
 allTabsGroup.forEach((tabsGroup) => {
   for (let i = 0; i < tabsGroup.children.length; i++) {
     const tabs = tabsGroup.children[i].querySelectorAll(".tabs");
@@ -112,11 +112,11 @@ allTabsGroup.forEach((tabsGroup) => {
 });
 // ------------predict method----------------
 function toggleBulkOption() {
-  var fileTypeSelect = document.getElementById("fileType");
+  var toggleCheckbox = document.getElementById("fileType");
   var bulkOption = document.getElementById("bulkOption");
   var singleOption = document.getElementById("singleOption");
 
-  if (fileTypeSelect.value === "single") {
+  if (!toggleCheckbox.checked) {
     bulkOption.style.display = "none";
     singleOption.style.display = "block";
   } else {
