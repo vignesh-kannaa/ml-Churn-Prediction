@@ -5,10 +5,12 @@ from dataclasses import dataclass
 import os
 import sys
 
+from db_connection import DBData
+
 
 @dataclass
 class DataIngestionConfig:
-    raw_data_path: str = os.path.join('artifacts', "data.csv")
+    raw_data_path: str = os.path.join('notebook/data', "churndata.csv")
 
 
 class DataIngestion:
@@ -17,8 +19,8 @@ class DataIngestion:
 
     def initiate_data_ingestion(self):
         try:
-            # loading dataset from cvs for now(update this to load data from API and save the dataframe in sql)
-            df = pd.read_csv('notebook\data\churndata.csv')
+            result, column_names = DBData.get_finance_data()
+            df = pd.DataFrame(result, columns=column_names)
             df.to_csv(self.ingestion_config.raw_data_path,
                       index=False, header=True)
             return
