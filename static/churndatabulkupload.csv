@@ -1,0 +1,5 @@
+customer_name,customer_id,credit_score,country,gender,age,tenure,balance,products_number,credit_card,active_member,estimated_salary,churn
+William,15634602,619,France,Female,42,2,0,1,1,1,101348.88,1
+Emily,15647311,608,Spain,Female,41,1,83807.86,1,0,1,112542.58,0
+Benjamin,15619304,502,France,Female,42,8,159660.8,3,1,0,113931.57,1
+Charlotte,15701354,699,France,Female,39,1,0,2,0,0,93826.63,0

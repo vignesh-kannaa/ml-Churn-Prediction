@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Churn Prediction</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- <script
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8" />
+    <script
       type="text/javascript"
       src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"
     ></script>
@@ -16,435 +18,266 @@
       crossorigin="anonymous"
     ></script>
     <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
-      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-      crossorigin="anonymous"
-    ></script> -->
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css"
+    />
     <link
       rel="stylesheet"
       type="text/css"
       href="{{ url_for('static', filename='index.css') }}"
     />
   </head>
-  <body class="margin">
-    <h1 class="title">Churn Prediction for Bank</h1>
 
-    <!-- -------Tabs-------- -->
-    <div class="tabs-group">
-      <div class="tabs-container">
-        <div class="tabs">
-          <p>Predict</p>
-        </div>
-        <div class="tabs">
-          <p>Info</p>
-        </div>
-        <div class="tabs">
-          <p>Data info</p>
-        </div>
-
-        <!-- <div class="tabs">
-          <p>Statistics</p>
-        </div> -->
-
-        <div class="indicator"></div>
-      </div>
-
-      <div class="tab-content">
-        <!-- -------Tab 2-------- -->
-        <div class="tab-content-item">
-          <div class="container mx-auto">
-            <form
-              action="{{ url_for('predict') }}"
-              id="forminput"
-              name="forminput"
-              enctype="multipart/form-data"
-              method="post"
-            >
-              <div>
-                <label
-                  class="relative inline-flex items-center mb-4 cursor-pointer"
+  <body>
+    <ion-app>
+      <ion-content>
+        <ion-grid class="pageMargin">
+          <ion-row>
+            <ion-card class="bannerCard">
+              <ion-card-header>
+                <ion-card-title class="title">
+                  Churn Prediction for Banks</ion-card-title
                 >
-                  <input
-                    type="checkbox"
-                    class="sr-only peer"
-                    id="fileType"
-                    onchange="toggleBulkOption()"
-                    name="fileType"
-                  />
-
-                  <div
-                    class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
-                  ></div>
-                  <span
-                    class="ml-3 text-sm font-medium text-white-900 dark:text-white-300"
-                    >Multiple Predictions</span
-                  >
-                </label>
-              </div>
-              <br />
-              <!-- bulk option -->
-              <div id="bulkOption" class="mb-4">
-                <div class="flex items-center justify-center w-full">
-                  <label
-                    for="dropzone-file"
-                    class="flex flex-col items-center justify-center w-1/2 h-30 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-                  >
-                    <div
-                      class="flex flex-col items-center justify-center pt-5 pb-6"
-                    >
-                      <svg
-                        aria-hidden="true"
-                        class="w-10 h-10 mb-3 text-gray-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                        ></path>
-                      </svg>
-                      <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                        <span class="font-semibold">Click to upload</span> or
-                        drag and drop
-                      </p>
-                      <p class="text-xs text-gray-500 dark:text-gray-400">
-                        CSV (MAX. 50 MB)
-                      </p>
-                    </div>
-                    <input
-                      id="dropzone-file"
-                      name="bulkuploadfile"
-                      type="file"
-                      class="hidden"
-                    />
-                  </label>
-                </div>
-
-                <!-- <input
-                  class="block w-1/3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                  name="bulkuploadfile"
-                  id="dropzone-file"
-                  type="file"
-                /> -->
-              </div>
-              <!-- single option -->
-              <div id="singleOption">
-                <div class="grid md:grid-cols-4 md:gap-6">
-                  <input
-                    type="text"
-                    name="customerName"
-                    class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    value=""
-                    placeholder="Customer Name"
-                  />
-                  <select
-                    name="country"
-                    class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  >
-                    <option disabled selected>Country</option>
-                    <option>Germany</option>
-                    <option>Spain</option>
-                    <option>France</option>
-                  </select>
-                  <select
-                    name="gender"
-                    class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  >
-                    <option disabled selected>Gender</option>
-                    <option>Male</option>
-                    <option>Female</option>
-                  </select>
-                  <input
-                    type="number"
-                    name="age"
-                    class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    value=""
-                    placeholder="Age"
-                  />
-                  <input
-                    type="number"
-                    name="tenure"
-                    class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    value=""
-                    placeholder="Tenure"
-                  />
-                  <input
-                    type="number"
-                    name="balance"
-                    class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    value=""
-                    placeholder="Balance"
-                  />
-                  <input
-                    type="number"
-                    name="creditScore"
-                    class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    value=""
-                    placeholder="Credit Score"
-                  />
-                  <input
-                    type="number"
-                    name="productsNumber"
-                    class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    value=""
-                    placeholder="No of Products"
-                  />
-                  <select
-                    name="creditCard"
-                    class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  >
-                    <option disabled selected>Credit Card</option>
-                    <option>Yes</option>
-                    <option>No</option>
-                  </select>
-                  <select
-                    name="activemember"
-                    class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  >
-                    <option disabled selected>Active Member</option>
-                    <option>Yes</option>
-                    <option>No</option>
-                  </select>
-                  <input
-                    type="number"
-                    name="estimatedSalary"
-                    class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    value=""
-                    placeholder="Estimated Salary"
-                  />
-                </div>
-              </div>
-              <br />
-              <div class="flex justify-center items-center">
-                <button
-                  class="w-48 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                >
-                  Predict
-                </button>
-              </div>
-            </form>
-          </div>
-          <div class="text-center">
-            {% if results is defined %} {% if results == 0 %}
-
-            <h5
-              class="mb-2 text-2xl font-bold tracking-tight text-green-900 dark:text-green"
-            >
-              No churn :)
-            </h5>
-            {% elif results == 1 %}
-
-            <h5
-              class="mb-2 text-2xl font-bold tracking-tight text-red-900 dark:text-red"
-            >
-              Churn :(
-            </h5>
-            <b>Recommendation:</b> Take proactive measures to retain the
-            customer by offering personalized incentives or loyalty programs
-            tailored to their needs and preferences.<br />
-            <b>Actionable Insights:</b> Analyze the factors contributing to
-            churn, such as customer behavior, satisfaction levels, and usage
-            patterns, to identify areas for improvement and develop targeted
-            retention strategies. {% endif %} {% endif %}
-            <!-- for bulk result -->
-            {{ bulkResult | safe}}
-          </div>
-        </div>
-        <!-- -------Tab 2-------- -->
-        <div class="tab-content-item">
-          <div style="margin: 0 5%">
-            The churn rate is a critical metric in the financial industry,
-            measuring the rate at which customers discontinue their relationship
-            with a company or service. Understanding and predicting churn is of
-            utmost importance for businesses as it directly impacts revenue and
-            customer retention. In this project, we aim to explore and analyze
-            financial data using machine learning models and exploratory data
-            analysis (EDA) techniques to gain insights into customer behavior
-            and factors influencing churn. By leveraging these techniques, we
-            seek to develop effective strategies for reducing churn and
-            improving customer satisfaction, ultimately driving business growth
-            and success.
-          </div>
-        </div>
-        <!-- -------Tab 2-------- -->
-        <div class="tab-content-item">
-          <div
-            class="relative overflow-x-auto"
-            style="width: 50%; margin: auto"
+              </ion-card-header>
+              <ion-card-content class="cardContent">
+                The churn rate is a critical metric in the financial industry,
+                measuring the rate at which customers discontinue their
+                relationship with a company or service. Understanding and
+                predicting churn is of utmost importance for businesses as it
+                directly impacts revenue and customer retention. In this
+                project, we aim to explore and analyze financial data using
+                machine learning models and exploratory data analysis (EDA)
+                techniques to gain insights into customer behavior and factors
+                influencing churn. By leveraging these techniques, we seek to
+                develop effective strategies for reducing churn and improving
+                customer satisfaction, ultimately driving business growth and
+                success.
+              </ion-card-content>
+            </ion-card>
+          </ion-row>
+        </ion-grid>
+        <div class="pageMargin">
+          <ion-toggle
+            class="togglebtn"
+            id="fileType"
+            onclick="toggleBulkOption(this.checked ? 'false' : 'true')"
+            name="fileType"
+            >Multiple Predictions</ion-toggle
           >
-            <table
-              class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
-            >
-              <thead
-                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-              >
-                <tr>
-                  <th scope="col" class="px-6 py-3">Field Input</th>
-                  <th scope="col" class="px-6 py-3">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                >
-                  <th
-                    scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    Customer Name
-                  </th>
-                  <td class="px-6 py-4">Name of the Customer</td>
-                </tr>
-                <tr
-                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                >
-                  <th
-                    scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    Country
-                  </th>
-                  <td class="px-6 py-4">
-                    Country in which the customer holds the bank account
-                  </td>
-                </tr>
-                <tr
-                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                >
-                  <th
-                    scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    Credit Score
-                  </th>
-                  <td class="px-6 py-4">Credit score of the customer</td>
-                </tr>
-                <tr
-                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                >
-                  <th
-                    scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    Age
-                  </th>
-                  <td class="px-6 py-4">Age of the customer</td>
-                </tr>
-                <tr
-                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                >
-                  <th
-                    scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    Tenure
-                  </th>
-                  <td class="px-6 py-4">
-                    How long the customer been in the bank
-                  </td>
-                </tr>
-                <tr
-                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                >
-                  <th
-                    scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    Balance
-                  </th>
-                  <td class="px-6 py-4">
-                    How much balance they have in their account
-                  </td>
-                </tr>
-                <tr
-                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                >
-                  <th
-                    scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    Active Member
-                  </th>
-                  <td class="px-6 py-4">
-                    whether they are active member or inactive member.
-                  </td>
-                </tr>
-                <tr
-                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                >
-                  <th
-                    scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    Credit Card
-                  </th>
-                  <td class="px-6 py-4">
-                    Whether the customer have credit card or not (Yes or No)
-                  </td>
-                </tr>
-                <tr
-                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                >
-                  <th
-                    scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    Products Number
-                  </th>
-                  <td class="px-6 py-4">Number of products they own</td>
-                </tr>
-                <tr
-                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                >
-                  <th
-                    scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    Estimated Salary
-                  </th>
-                  <td class="px-6 py-4">
-                    How much customer are expected to earn
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <!-- ------Tab 3--------- -->
-        <!-- <div class="tab-content-item">
-          <p>Tab 3 Content</p>
-        </div> -->
-      </div>
-    </div>
+          <form id="forminput" enctype="multipart/form-data">
+            <ion-grid class="prediction">
+              <ion-row>
+                <ion-col size="8">
+                  <div id="bulkOption" class="bulkuploadmargin">
+                    <ion-row class="templatebtnrow">
+                      <a
+                        href="static\churndatabulkupload.csv"
+                        download="FinanceData-BulkUpload"
+                        ><ion-button
+                          class="templateBtn"
+                          shape="round"
+                          type="button"
+                          >Download Template</ion-button
+                        ></a
+                      >
+                    </ion-row>
+                    <div class="flex items-center justify-center w-full">
+                      <label
+                        for="dropzone-file"
+                        class="flex flex-col items-center justify-center w-1/2 h-30 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                      >
+                        <div
+                          class="flex flex-col items-center justify-center pt-5 pb-6"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="w-10 h-10 mb-3 text-gray-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                            ></path>
+                          </svg>
+                          <p
+                            class="mb-2 text-sm text-gray-500 dark:text-gray-400"
+                          >
+                            <span class="font-semibold">Click to upload</span>
+                            or drag and drop
+                          </p>
+                          <p class="text-xs text-gray-500 dark:text-gray-400">
+                            CSV (MAX. 50 MB)
+                          </p>
+                        </div>
+                        <input
+                          id="dropzone-file"
+                          name="bulkuploadfile"
+                          type="file"
+                          class="hidden"
+                        />
+                      </label>
+                    </div>
+                  </div>
+                  <ion-row>
+                    <ion-col>
+                      <!-- <div id="bulkOption">
+                      <ion-input
+                        type="file"
+                        name="bulkuploadfile"
+                        id="fileInput"
+                      ></ion-input>
+                    </div> -->
+
+                      <ion-list name="singleOption">
+                        <ion-item>
+                          <ion-input
+                            type="text"
+                            name="customerName"
+                            value=""
+                            id="customerName"
+                            placeholder="Customer Name"
+                          ></ion-input>
+                        </ion-item>
+                        <ion-item>
+                          <ion-select
+                            name="country"
+                            interface="popover"
+                            placeholder="Select Country"
+                          >
+                            <ion-select-option value="Germany"
+                              >Germany</ion-select-option
+                            >
+                            <ion-select-option value="Spain"
+                              >Spain</ion-select-option
+                            >
+                            <ion-select-option value="France"
+                              >France</ion-select-option
+                            >
+                          </ion-select>
+                        </ion-item>
+                        <ion-item>
+                          <ion-select
+                            name="gender"
+                            interface="popover"
+                            placeholder="Select Gender"
+                          >
+                            <ion-select-option value="Male"
+                              >Male</ion-select-option
+                            >
+                            <ion-select-option value="Female"
+                              >Female</ion-select-option
+                            >
+                          </ion-select>
+                        </ion-item>
+                        <ion-item>
+                          <ion-input
+                            type="number"
+                            name="age"
+                            value=""
+                            placeholder="Age"
+                          ></ion-input>
+                        </ion-item>
+                        <ion-item>
+                          <ion-input
+                            type="number"
+                            name="tenure"
+                            value=""
+                            placeholder="Tenure"
+                          ></ion-input>
+                        </ion-item>
+                        <ion-item>
+                          <ion-input
+                            type="number"
+                            name="balance"
+                            value=""
+                            placeholder="Balance"
+                          ></ion-input>
+                        </ion-item>
+                      </ion-list>
+                    </ion-col>
+                    <ion-col>
+                      <ion-list name="singleOption">
+                        <ion-item>
+                          <ion-input
+                            type="number"
+                            name="creditScore"
+                            value=""
+                            placeholder="Credit Score"
+                          ></ion-input>
+                        </ion-item>
+                        <ion-item>
+                          <ion-input
+                            type="number"
+                            name="productsNumber"
+                            value=""
+                            placeholder="No of Products"
+                          ></ion-input>
+                        </ion-item>
+                        <ion-item>
+                          <ion-select
+                            name="creditCard"
+                            interface="popover"
+                            placeholder="Credit Card"
+                          >
+                            <ion-select-option value="1">Yes</ion-select-option>
+                            <ion-select-option value="0">No</ion-select-option>
+                          </ion-select>
+                        </ion-item>
+                        <ion-item>
+                          <ion-select
+                            name="activemember"
+                            interface="popover"
+                            placeholder="Active Member"
+                          >
+                            <ion-select-option value="1">Yes</ion-select-option>
+                            <ion-select-option value="0">No</ion-select-option>
+                          </ion-select>
+                        </ion-item>
+                        <ion-item>
+                          <ion-input
+                            type="number"
+                            name="estimatedSalary"
+                            placeholder="Estimated Salary"
+                          ></ion-input>
+                        </ion-item>
+                      </ion-list>
+                    </ion-col>
+                  </ion-row>
+
+                  <ion-row class="btnrow">
+                    <ion-button shape="round" type="submit">Predict</ion-button>
+                  </ion-row>
+                </ion-col>
+                <ion-col size="4">
+                  <ion-card class="resultcard">
+                    <ion-card-content class="resultcontent">
+                      <img id="resultimg" src="static\hit.gif" alt="gifs" />
+                    </ion-card-content>
+                    <ion-card-header>
+                      <ion-card-title class="resulttitle" id="result">
+                      </ion-card-title>
+                    </ion-card-header>
+                  </ion-card>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </form>
+        </div> </ion-content
+    ></ion-app>
+    <script></script>
   </body>
   <script src="{{ url_for('static', filename='script.js') }}"></script>
-  <!-- <script>
-    $("#forminput").on("submit", function (event) {
-      event.preventDefault();
-      var formData = new FormData(this);
-      var fileInput = document.getElementById("dropzone-file");
-      console.log("fileInput: ", fileInput);
-      if (fileInput.files.length > 0) {
-        formData.append("bulkuploadfile", fileInput.files[0]);
-      }
-      console.log(formData);
-
-      $.ajax({
-        url: "/predict",
-        type: "POST",
-        data: $(this).serialize(),
-        success: function (response) {
-          if (response) {
-            $("#result").html("success");
-          } else {
-            $("#result").html("failed");
-          }
-        },
-      });
-    });
-  </script> -->
 </html>

@@ -1,15 +1,69 @@
-.tab-content {
-  margin: 5% 0 0 5%;
+.pageMargin {
+  padding: 100px;
 }
-.margin {
-  margin: 4% 5%;
+.bannerCard {
+  border-radius: 43px;
+  padding: 45px;
+  background-color: #194048;
+  width: 1200px;
+  height: 600px;
+  text-align: center;
+}
+.templateBtn {
+  width: 170px;
+}
+.templatebtnrow {
+  justify-content: center;
+  margin-bottom: 15px;
 }
 .title {
-  font-size: 35px;
-  text-align: center;
   font-weight: bold;
-  margin: 0 0 30px 0;
+  color: #d8ed6b;
+  font-size: 95px;
 }
-.result {
-  text-align: center;
+.cardContent {
+  font-size: 20px;
+  color: #ffffff;
+}
+.resultcontent {
+  justify-content: center;
+  display: flex;
+}
+.prediction {
+  background: #f8f8f8;
+}
+.togglebtn {
+  margin: 21px;
+  font-size: 21px;
+}
+ion-toggle {
+  --handle-background-checked: #194048;
+  --handle-background: #194048;
+  --track-background: #ddd;
+  --track-background-checked: #d8ed6b;
+}
+.resultcard {
+  border-radius: 42px;
+  height: 350px;
+}
+.resulttitle {
+  color: #194048;
+  margin: auto;
+  font-size: 25px;
+}
+ion-button {
+  height: 50px;
+  color: #d8ed6b;
+  --background: #194048;
+  width: 450px;
+  text-transform: none;
+}
+.btnrow {
+  margin: 35px 100px;
+}
+.bulkuploadmargin {
+  margin: 70px 0 71px 0;
+}
+.ion-list {
+  width: 85%;
 }

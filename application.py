@@ -12,66 +12,56 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/predict', methods=['POST'])
-def predict():
+@app.route('/predictData', methods=['POST'])
+def predictData():
+    formData = request.get_json()
+    features = form_data(formData)
+    model, preprocessor = loadModel()
+    transformed_data = preprocessor.transform(features)
+    results = model.predict(transformed_data)
+    result = 'Customer will Stay!' if results[0] == 0 else 'Customer may Leave!!!<br/>Take necessary steps'
+    img = 'thumbs_up.gif' if results[0] == 0 else 'thumbs_down.gif'
+    return [result, img]
 
+
+@app.route('/predictBulkData', methods=['POST'])
+def predictBulkData():
+    bulkfile = request.files['bulkuploadfile']
+    if bulkfile:
+        model, preprocessor = loadModel()
+        fileContentdata = pd.read_csv(bulkfile)
+        transformed_data = preprocessor.transform(fileContentdata)
+        predictions = model.predict(transformed_data)
+        print(predictions)
+        results = formatBulkResult(fileContentdata, predictions)
+        print(results)
+        return results
+    else:
+        return 'No data found!'
+
+
+def loadModel():
     model_path = os.path.join("notebook/pickle", "model.pkl")
     preprocessor_path = os.path.join('notebook/pickle', 'preprocessor.pkl')
     preprocessor = load_object(file_path=preprocessor_path)
     model = load_object(file_path=model_path)
-
-    if request.form.get('fileType') == 'on':
-        # print('inside the bulk option')
-        if 'bulkuploadfile' in request.files:
-            bulkfile = request.files['bulkuploadfile']
-            # print('bulkfile:', bulkfile)
-            # file_content = bulkfile.read()
-            # file = request.files['bulkuploadfile']
-            fileContentdata = pd.read_csv(bulkfile)
-            # print(fileContentdata)
-            transformed_data = preprocessor.transform(fileContentdata)
-            results = model.predict(transformed_data)
-            html_content = convert_to_html(fileContentdata, results)
-            return render_template('index.html', bulkResult=html_content)
-
-    else:
-        features = form_data()
-        transformed_data = preprocessor.transform(features)
-        results = model.predict(transformed_data)
-        print('results:', results)
-        # result = 'No Churn' if results[0] == 0 else 'Churn'
-        return render_template('index.html', results=results[0])
+    return model, preprocessor
 
 
-def form_data():
+def form_data(formdata):
     data = {
-        "customerName": request.form.get('customerName'),
-        "country": request.form.get('country'),
-        "gender": request.form.get('gender'),
-        "age": request.form.get('age'),
-        "tenure": request.form.get('tenure'),
-        "balance": request.form.get('balance'),
-        "credit_score": request.form.get('creditScore'),
-        "products_number": request.form.get('productsNumber'),
-        "credit_card": request.form.get('creditCard'),
-        "active_member": request.form.get('activemember'),
-        "estimated_salary": request.form.get('estimatedSalary'),
+        "customerName": formdata['customerName'],
+        "country": formdata['country'],
+        "gender": formdata['gender'],
+        "age": formdata['age'],
+        "tenure": formdata['tenure'],
+        "balance": formdata['balance'],
+        "credit_score": formdata['creditScore'],
+        "products_number": formdata['productsNumber'],
+        "credit_card": formdata['creditCard'],
+        "active_member": formdata['activemember'],
+        "estimated_salary": formdata['estimatedSalary'],
     }
-    # data = {
-    #     "customerName": request.form['customerName'],
-    #     "country": request.form['country'],
-    #     "gender": request.form['gender'],
-    #     "age": request.form['age'],
-    #     "tenure": request.form['tenure'],
-    #     "balance": request.form['balance'],
-    #     "credit_score": request.form['creditScore'],
-    #     "products_number": request.form['productsNumber'],
-    #     "credit_card": request.form['creditCard'],
-    #     "active_member": request.form['activemember'],
-    #     "estimated_salary": request.form['estimatedSalary'],
-    # }
-    data['credit_card'] = 1 if data['credit_card'] == 'yes' else 0
-    data['active_member'] = 1 if data['active_member'] == 'yes' else 0
     features = pd.DataFrame([data])
     return features
 
@@ -81,48 +71,12 @@ def load_object(file_path):
         return pickle.load(file_obj)
 
 
-def convert_to_html(fileContentdata, results):
-    table_html = '''
-        <div class="relative overflow-x-auto" style="width: 50%;    margin: auto; padding-top: 5%">
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            Customer Name
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Result
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-        '''
-
-    for customer, result in zip(fileContentdata['customer_name'], results):
-        if result == 1:
-            row_class = "bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-            result_text = "Churn"
-        else:
-            row_class = "bg-white dark:bg-gray-800"
-            result_text = "No Churn"
-        table_html += '''
-                <tr class="{}">
-                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        {}
-                    </td>
-                    <td class="px-6 py-4">
-                        {}
-                    </td>
-                </tr>
-            '''.format(row_class, customer, result_text)
-
-    table_html += '''
-                </tbody>
-            </table>
-        </div>
-        '''
-
-    return table_html
+def formatBulkResult(fileContentdata, modelPredictions):
+    results = ''
+    for customer, prediction in zip(fileContentdata['customer_name'], modelPredictions):
+        results += customer+' - ' + \
+            ('Churn' if prediction == 1 else 'No Churn') + '<br/>'
+    return results
 
 
 if __name__ == "__main__":
