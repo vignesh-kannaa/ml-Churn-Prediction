@@ -13,6 +13,6 @@
     </div>
     <br/>
     <b>Demo:</b> A live demo of the project is available at https://churnanalyzerbank.azurewebsites.net/
-  
-
-
+    <br/>
+    
+![Churn Prediction](https://github.com/vignesh-kannaa/ml-Churn-Prediction/assets/67087280/2edf35df-9fa9-49b0-9974-42a0dd47cb09)
